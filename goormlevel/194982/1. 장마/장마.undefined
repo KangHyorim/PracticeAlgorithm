@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken()); // 집의 개수
+        int M = Integer.parseInt(st.nextToken()); // 장마 기간(일)
+        
+        int[] heights = new int[N + 1]; // 집의 높이 (1번 인덱스부터 사용)
+        
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= N; i++) {
+            heights[i] = Integer.parseInt(st.nextToken());
+        }
+        
+        // 최근 3일간 비를 맞은 집의 번호를 저장할 Set (중복 방지)
+        HashSet<Integer> rainedHouses = new HashSet<>();
+
+        for (int day = 1; day <= M; day++) {
+            st = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+
+            // 1. 오늘 비가 온 범위의 집 높이 증가 및 기록
+            for (int i = s; i <= e; i++) {
+                heights[i]++;        // 물 높이 증가
+                rainedHouses.add(i); // 이번 배수 주기 동안 비 맞음 기록
+            }
+
+            // 2. 3의 배수 날짜(3, 6, 9...)마다 배수 시스템 작동
+            if (day % 3 == 0) {
+                for (int houseIdx : rainedHouses) {
+                    heights[houseIdx]--; // 비 맞았던 집 물 빼기
+                }
+                rainedHouses.clear(); // 배수 후 기록 초기화
+            }
+        }
+
+        // 출력
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= N; i++) {
+            sb.append(heights[i]).append(" ");
+        }
+        System.out.println(sb.toString());
+    }
+}
