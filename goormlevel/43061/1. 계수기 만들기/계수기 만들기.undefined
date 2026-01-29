@@ -1,0 +1,41 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int[] a = new int[N];
+		int[] b = new int[N];
+
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < N; i++){
+			a[i] = Integer.parseInt(st.nextToken());
+		}
+
+		st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < N; i++){
+			b[i] = Integer.parseInt(st.nextToken());
+		}
+
+		int K = Integer.parseInt(br.readLine());
+
+		for(int i = 0; i < K; i++){
+			int pos = N - 1;
+			b[pos]++;
+
+			while(pos >= 0 && b[pos] > a[pos]){
+				b[pos] = 0;
+				pos--;
+				if(pos >= 0) b[pos]++;
+			}
+
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < N; i++){
+			sb.append(b[i]);
+		}
+		System.out.println(sb.toString());
+	}
+}
