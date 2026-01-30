@@ -6,55 +6,39 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        boolean[] isExcluded = new boolean[1002];
+        int N = Integer.parseInt(st.nextToken());   // 자연수 (1 ~ 1000)
+        int M = Integer.parseInt(st.nextToken());   // 집합 크기 (0 ~ 50)
+        boolean[] excluded = new boolean[1002];
 
         if (M > 0) {
             st = new StringTokenizer(br.readLine());
 
-            for(int i = 0; i < M; i++){
-                int num = Integer.parseInt(st.nextToken());
-                isExcluded[num] = true;
+            for (int i = 0; i < M; i++) {
+                int n = Integer.parseInt(st.nextToken());
+                excluded[n] = true;
             }
         }
 
         int minDiff = Integer.MAX_VALUE;
 
-        for (int x = 1; x <= 1001; x++) {
-            if (isExcluded[x]) continue;
+        for (int i = 1; i <= 1001; i++) {
+            if (excluded[i]) continue;
 
-            for (int y = 1; y <= 1001; y++) {
-                if (isExcluded[y]) continue;
+            for (int j = 1; j <= 1001; j++) {
+                if (excluded[j]) continue;
 
-                int xy = x * y;
-                if (xy > N && (xy - N) > minDiff) {
-                    break;
-                }
+                for (int k = 1; k <= 1001; k++) {
+                    if (excluded[k]) continue;
 
-                for (int z = 1; z <= 1001; z++) {
-                    if (isExcluded[z]) continue;
-
-                    int val = xy * z;
+                    int val = i * j * k;
                     int diff = Math.abs(N - val);
 
-                    if (diff < minDiff) {
-                        minDiff = diff;
-                    }
+                    minDiff = Math.min(minDiff, diff);
 
-                    if (minDiff == 0) {
-                        System.out.println(0);
-                        return;
-                    }
-
-                    if (val > N && (val - N) > minDiff) {
-                        break;
-                    }
+                    if (N < val) break;
                 }
             }
         }
-
         System.out.println(minDiff);
-
     }
 }
