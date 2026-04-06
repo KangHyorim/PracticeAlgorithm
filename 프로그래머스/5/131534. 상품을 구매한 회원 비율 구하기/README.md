@@ -12,11 +12,11 @@
 
 ### 채점결과
 
-Empty
+합계: 100.0 / 100.0
 
 ### 제출 일자
 
-2024년 02월 23일 04:19:58
+2026년 04월 06일 21:35:55
 
 ### 문제 설명
 
@@ -252,7 +252,7 @@ Empty
         <thead><tr>
 <th>YEAR</th>
 <th>MONTH</th>
-<th>PUCHASED_USERS</th>
+<th>PURCHASED_USERS</th>
 <th>PUCHASED_RATIO</th>
 </tr>
 </thead>
