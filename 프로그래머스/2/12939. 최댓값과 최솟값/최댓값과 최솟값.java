@@ -1,16 +1,18 @@
+import java.util.*;
 class Solution {
     public String solution(String s) {
-        String[] parts = s.split(" ");
+        String answer = "";
+        String[] strArr = s.split(" ");  // ✅ String[]로 받기
         
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        
-        for(String p : parts){
-            int num = Integer.parseInt(p);
-            min = Math.min(min, num);
-            max = Math.max(max, num);
+        int[] arr = new int[strArr.length];
+        for (int i = 0; i < strArr.length; i++) {
+            arr[i] = Integer.parseInt(strArr[i]);  // ✅ int로 변환
         }
         
-        return min + " " + max;
+        Arrays.sort(arr);
+        answer += arr[0];
+        answer += " ";
+        answer += arr[arr.length - 1];
+        return answer;
     }
 }
