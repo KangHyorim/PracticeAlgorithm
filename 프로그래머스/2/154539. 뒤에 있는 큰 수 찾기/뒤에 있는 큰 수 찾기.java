@@ -8,9 +8,10 @@ class Solution {
         Arrays.fill(answer, -1);
         
         for(int i = 0; i < n; i++){
-            while(!stack.isEmpty() && numbers[stack.peek()] < numbers[i]){
+            while(!stack.isEmpty()&& numbers[stack.peek()] < numbers[i]){
                 answer[stack.pop()] = numbers[i];
             }
+
             stack.push(i);
         }
         
