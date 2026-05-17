@@ -1,0 +1,69 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // 빠른 입출력을 위해 BufferedReader와 StringTokenizer 사용
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        int N = Integer.parseInt(st.nextToken()); // 섬의 개수
+        int M = Integer.parseInt(st.nextToken()); // 다리의 개수
+        
+        // 각 섬에 살고 있는 사람 수 입력 받기 (1번 인덱스부터 사용)
+        int[] P = new int[N + 1];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= N; i++) {
+            P[i] = Integer.parseInt(st.nextToken());
+        }
+        
+        // 그래프 인접 리스트 초기화
+        ArrayList<Integer>[] graph = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        // 다리 정보 입력 받기 (왕복 다리이므로 양방향 그래프 연결)
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            graph[s].add(e);
+            graph[e].add(s);
+        }
+        
+        // 최단 거리를 기록할 배열 (-1로 초기화하여 방문하지 않음을 표시)
+        int[] distance = new int[N + 1];
+        Arrays.fill(distance, -1);
+        
+        // BFS를 위한 큐 생성 및 시작점(1번 섬) 설정
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(1);
+        distance[1] = 0; // 1번 섬 자기 자신까지의 거리는 0
+        
+        // BFS 탐색 시작
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            
+            for (int next : graph[current]) {
+                // 아직 방문하지 않은 섬이라면
+                if (distance[next] == -1) {
+                    distance[next] = distance[current] + 1; // 현재 거리 + 1
+                    queue.offer(next);
+                }
+            }
+        }
+        
+        // 구름이가 벌게 될 총 최소 금액 계산
+        long totalCost = 0; // 결과 값이 커질 수 있으므로 long 타입 사용
+        for (int i = 1; i <= N; i++) {
+            // 1번 섬과 연결되어 이동이 가능한 섬만 계산
+            if (distance[i] != -1) {
+                totalCost += (long) P[i] * distance[i];
+            }
+        }
+        
+        // 결과 출력
+        System.out.println(totalCost);
+    }
+}
