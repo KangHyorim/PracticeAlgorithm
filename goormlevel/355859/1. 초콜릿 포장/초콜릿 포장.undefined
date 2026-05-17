@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int J = Integer.parseInt(st.nextToken()); // 초콜릿의 개수
+		int N = Integer.parseInt(st.nextToken()); // 상자의 개수
+		
+		int[] capacities = new int[N];
+		
+		// 각 상자의 크기(용량) 계산 후 배열에 저장
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			int r = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			capacities[i] = r * c;
+		}
+		
+		// 상자 크기 기준 오름차순 정렬
+		Arrays.sort(capacities);
+		
+		int totalCapacity = 0;
+		int boxCount = 0;
+		
+		// 가장 큰 상자부터 역순으로 선택 (배열의 끝에서부터 탐색)
+		for (int i = N - 1; i >= 0; i--) {
+			totalCapacity += capacities[i];
+			boxCount++;
+			
+			// 필요한 초콜릿 개수를 충족하면 상자 개수 출력 후 종료
+			if (totalCapacity >= J) {
+				System.out.println(boxCount);
+				return;
+			}
+		}
+		
+		// 모든 상자를 다 써도 초콜릿을 다 담지 못하는 경우
+		System.out.println(-1);
+	}
+}
