@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) throws Exception {
+        // Scanner 대신 성능이 좋고 입력 버그가 적은 BufferedReader 사용
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        String line = br.readLine();
+        if (line == null) return;
+        
+        StringTokenizer st = new StringTokenizer(line);
+        int N = Integer.parseInt(st.nextToken()); // 섬의 개수
+        int M = Integer.parseInt(st.nextToken()); // 다리의 개수
+        
+        // 각 섬의 인구수 입력 받기
+        int[] P = new int[N + 1];
+        line = br.readLine();
+        if (line != null) {
+            st = new StringTokenizer(line);
+            // 에러 방지: 토큰이 남아있을 때까지만 입력받음
+            for (int i = 1; i <= N && st.hasMoreTokens(); i++) {
+                P[i] = Integer.parseInt(st.nextToken());
+            }
+        }
+        
+        // 그래프 인접 리스트 초기화
+        ArrayList<Integer>[] graph = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        // 다리 정보 입력 받기
+        for (int i = 0; i < M; i++) {
+            line = br.readLine();
+            if (line == null) break; // 읽을 라인이 없으면 중단
+            
+            st = new StringTokenizer(line);
+            if (st.hasMoreTokens()) {
+                int s = Integer.parseInt(st.nextToken());
+                int e = Integer.parseInt(st.nextToken());
+                graph[s].add(e);
+                graph[e].add(s);
+            }
+        }
+        
+        // BFS 탐색을 위한 준비
+        boolean[] visited = new boolean[N + 1];
+        Queue<Integer> queue = new LinkedList<>();
+        
+        queue.offer(1);
+        visited[1] = true;
+        
+        int totalPeople = 0;
+        
+        // BFS 탐색 시작 (1번 섬과 연결된 모든 섬 방문)
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            totalPeople += P[current]; // 방문한 섬의 인구수 누적
+            
+            for (int next : graph[current]) {
+                if (!visited[next]) {
+                    visited[next] = true;
+                    queue.offer(next);
+                }
+            }
+        }
+        
+        // 최종 정답 출력
+        System.out.println(totalPeople);
+    }
+}
